@@ -111,38 +111,234 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 const { useState, useEffect, useRef, useCallback } = React;
 
 const QS = [
-  {id:1,type:'mcq',topic:"JS Basics",text:"JavaScript qaysi turdagi dasturlash tili?",options:["Statik va kompilyatsiya qilinadigan","Dinamik va interpretatsiya qilinadigan","Faqat backend uchun","Faqat frontend uchun"],answer:1},
-  {id:2,type:'mcq',topic:"JS O'zgaruvchilar",text:"Quyidagi kalit so'zlardan qaysi biri blok darajasidagi o'zgaruvchi e'lon qiladi?",code:"var a = 1;\nlet b = 2;\nconst c = 3;",options:["Faqat var","var va let","let va const","Uchkalasi ham"],answer:2},
-  {id:3,type:'mcq',topic:"JS O'zgaruvchilar",text:"const bilan e'lon qilingan o'zgaruvchiga qayta qiymat bersa nima bo'ladi?",options:["Yangi qiymat beriladi","TypeError chiqadi","SyntaxError chiqadi","Hech narsa bo'lmaydi"],answer:1},
-  {id:4,type:'mcq',topic:"Ma'lumot turlari",text:"typeof null qanday qiymat qaytaradi?",code:"console.log(typeof null);",options:['"null"','"undefined"','"object"','"boolean"'],answer:2},
-  {id:5,type:'mcq',topic:"Primitive Types",text:"JavaScriptda nechta Primitive ma'lumot turi mavjud?",options:["5","6","7","8"],answer:2},
-  {id:6,type:'mcq',topic:"Primitive Types",text:"Quyidagi qiymatlardan qaysi biri falsy EMAS?",options:['0 (nol)','\"\" (bo\'sh string)','\"0\" (nol string)','undefined'],answer:2},
-  {id:7,type:'mcq',topic:"BigInt",text:"BigInt qanday yaratiladi?",options:["BigInt(9999999999999)","9999999999999n","Ikkalasi ham to'g'ri","new BigInt(9999)"],answer:2},
-  {id:8,type:'mcq',topic:"Symbol",text:"Symbol() haqida qaysi ifoda to'g'ri?",options:["Har safar bir xil qiymat qaytaradi","Har safar noyob (unique) qiymat qaytaradi","new kalit so'zi bilan ishlatiladi","Faqat string kalit bo'la oladi"],answer:1},
-  {id:9,type:'mcq',topic:"Arrays",text:"Quyidagi kod nima chiqaradi?",code:"const arr = [1, 2, 3];\nconsole.log(arr[5]);",options:["null","0","undefined","RangeError"],answer:2},
-  {id:10,type:'mcq',topic:"Array metodlari",text:".map() metodi nima qaytaradi?",options:["Asl arrayni o'zgartiradi","Yangi array qaytaradi","Boolean qaytaradi","Birinchi elementni qaytaradi"],answer:1},
-  {id:11,type:'mcq',topic:"Array metodlari",text:"Quyidagi kodning natijasi nima?",code:"const nums = [1,2,3,4,5];\nconst r = nums.filter(n => n % 2 === 0);\nconsole.log(r);",options:["[1,3,5]","[2,4]","[1,2,3,4,5]","[false,true,false,true,false]"],answer:1},
-  {id:12,type:'mcq',topic:"Array metodlari",text:".reduce() metodi haqida qaysi ifoda to'g'ri?",options:["Har doim array qaytaradi","Accumulator yordamida bitta qiymatga kamaytiradi","Arrayni teskari tartibga soladi","Faqat raqamli arraylar uchun ishlaydi"],answer:1},
-  {id:13,type:'mcq',topic:"Array metodlari",text:"splice() va slice() farqi nima?",options:["Ikkalasi ham asl arrayni o'zgartiradi","splice asl arrayni o'zgartiradi, slice yangi array qaytaradi","slice asl arrayni o'zgartiradi, splice yangi array qaytaradi","Hech qanday farqi yo'q"],answer:1},
-  {id:14,type:'mcq',topic:"For Loops",text:"for...of va for...in farqi nima?",options:["for...of key, for...in qiymat iteratsiya qiladi","for...in key, for...of qiymat iteratsiya qiladi","Ikkalasi ham bir xil ishlaydi","for...of faqat array, for...in faqat string uchun"],answer:1},
-  {id:15,type:'mcq',topic:"For Loops",text:"Quyidagi kod nechta marta ishlaydi?",code:"let i = 0;\ndo {\n  i++;\n} while (i < 3);",options:["0","2","3","4"],answer:2},
-  {id:16,type:'mcq',topic:"For Loops",text:"forEach() va map() ning asosiy farqi nima?",options:["forEach yangi array qaytaradi","map() hech narsa qaytarmaydi","forEach undefined qaytaradi, map yangi array qaytaradi","Ikkalasi ham bir xil"],answer:2},
-  {id:17,type:'mcq',topic:"Functions",text:"Arrow function va oddiy funksiyaning asosiy farqlaridan biri nima?",options:["Arrow function this ni leksik muhitdan oladi","Arrow function arguments obyektiga ega","Arrow function constructor bo'la oladi","Arrow function hoisting qilinadi"],answer:0},
-  {id:18,type:'mcq',topic:"Functions",text:"Quyidagi kodning natijasi nima?",code:'function greet(name = "Dunyo") {\n  return `Salom, ${name}!`;\n}\nconsole.log(greet());',options:["Salom, undefined!","Salom, !","Salom, Dunyo!","Error"],answer:2},
-  {id:19,type:'mcq',topic:"Functions",text:"Closure nima?",options:["Funksiyani yopish usuli","Ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish imkoniyati","Funksiyani qayta ishlatish","Funksiyani argument sifatida uzatish"],answer:1},
-  {id:20,type:'mcq',topic:"Functions",text:"IIFE nima uchun ishlatiladi?",code:"(function() {\n  // kod\n})();",options:["Kodni sekinlatish uchun","Global scope ni ifloslantirmaslik va o'zgaruvchilarni encapsulate qilish uchun","Faqat async kodlar uchun","Faqat class metodlari uchun"],answer:1},
-  {id:21,type:'mcq',topic:"TypeScript",text:"TypeScript haqida qaysi ifoda to'g'ri?",options:["Brauzerda to'g'ridan-to'g'ri ishlaydi","JavaScript ning superset'i va kompilyatsiyadan o'tadi","Faqat backend uchun","Alohida mustaqil dasturlash tili"],answer:1},
-  {id:22,type:'mcq',topic:"TypeScript",text:"Interface deklaratsiya birlashtirishni (declaration merging) qo'llab-quvvatlaydimi?",options:["Ha, interface deklaratsiya birlashtirishni qo'llab-quvvatlaydi","Yo'q, faqat Type alias qo'llab-quvvatlaydi","Ikkalasi ham qo'llab-quvvatlaydi","Ikkalasi ham qo'llab-quvvatlamaydi"],answer:0},
-  {id:23,type:'mcq',topic:"TypeScript",text:"Quyidagi TypeScript kodida xato bormi?",code:"let age: number = \"yosh\";",options:["Xato yo'q, TypeScript avtomatik konvertatsiya qiladi","Xato bor: string qiymat number tipiga mos kelmaydi","Xato yo'q, JavaScript da ishlaydi","Runtime da xato bo'ladi"],answer:1},
-  {id:24,type:'mcq',topic:"TypeScript",text:"? operatori TypeScriptda nima uchun ishlatiladi?",code:"interface User {\n  name: string;\n  age?: number;\n}",options:["Majburiy maydon belgilash uchun","Ixtiyoriy maydon belgilash uchun","Null tekshirish uchun","Ternary operator uchun"],answer:1},
-  {id:25,type:'mcq',topic:"Ma'lumot turlari",text:"== va === operatorlarining natijasi nima?",code:'console.log(1 == "1");  // ?\nconsole.log(1 === "1"); // ?',options:["false, false","true, true","true, false","false, true"],answer:2},
-  {id:26,type:'short',topic:"JS Basics",text:"JavaScript da hoisting nima? Qisqacha tushuntiring.",placeholder:"Javobingizni yozing...",answer:"Hoisting - o'zgaruvchi va funksiya deklaratsiyalarining ijro vaqtida kodning boshiga ko'tarilishi. var undefined bilan, funksiya deklaratsiyalari to'liq ko'tariladi."},
-  {id:27,type:'short',topic:"Primitive vs Non-Primitive",text:"Primitive va Non-Primitive ma'lumot turlari orasidagi asosiy farqni yozing.",placeholder:"Javobingizni yozing...",answer:"Primitive turlar qiymat bo'yicha (by value), non-primitive (object, array) turlar esa havola (reference) bo'yicha saqlanadi va uzatiladi."},
-  {id:28,type:'short',topic:"Array metodlari",text:"Array.prototype.find() va Array.prototype.findIndex() metodlarining farqini yozing.",placeholder:"Javobingizni yozing...",answer:"find() birinchi mos elementni qaytaradi, findIndex() uning indeksini qaytaradi. Topilmasa find() undefined, findIndex() -1 qaytaradi."},
-  {id:29,type:'short',topic:"Functions",text:"Pure function nima? Qisqa misol keltiring.",placeholder:"Javobingizni yozing...",answer:"Pure function - bir xil input uchun har doim bir xil output qaytaradigan va yon ta'sirlar (side effects) bo'lmagan funksiya. Misol: const add = (a,b) => a+b;"},
-  {id:30,type:'short',topic:"TypeScript",text:"TypeScriptda any va unknown tiplarining farqini tushuntiring.",placeholder:"Javobingizni yozing...",answer:"any - har qanday operatsiyaga ruxsat beradi, type checking o'tkazib yuboriladi. unknown - xavfsizroq: ishlatishdan oldin tip tekshiruvi talab qilinadi."}
-];
 
+/* =========================
+   MULTIPLE CHOICE (1–80)
+========================= */
+
+{ id:1,type:'mcq',topic:"JS Basics",text:"JavaScript qayerda ishlashi mumkin?",options:["Faqat brauzerda","Faqat serverda","Brauzer va serverda","Faqat mobil ilovalarda"],answer:2},
+
+{ id:2,type:'mcq',topic:"JS Basics",text:"JavaScript fayl kengaytmasi?",options:[".java",".js",".ts",".jsx"],answer:1},
+
+{ id:3,type:'mcq',topic:"JS Basics",text:"console.log nima qiladi?",options:["Kod to'xtaydi","Natijani chiqaradi","Xatoni tuzatadi","Variable yaratadi"],answer:1},
+
+{ id:4,type:'mcq',topic:"JS Basics",text:"JavaScript case-sensitive tilmi?",options:["Yo'q","Ha","Faqat stringlarda","Faqat functionlarda"],answer:1},
+
+{ id:5,type:'mcq',topic:"JS Basics",text:"Comment yozish uchun qaysi belgidan foydalaniladi?",options:["//","##","<!-- -->","**"],answer:0},
+
+/* VARIABLES */
+
+{ id:6,type:'mcq',topic:"JS O'zgaruvchilar",text:"var qaysi scope ga ega?",options:["Block","Function","Global only","None"],answer:1},
+
+{ id:7,type:'mcq',topic:"JS O'zgaruvchilar",text:"let qayta assign qilinadimi?",options:["Yo'q","Ha","Faqat stringlarda","Faqat numberlarda"],answer:1},
+
+{ id:8,type:'mcq',topic:"JS O'zgaruvchilar",text:"const nimani bildiradi?",options:["O'zgarmas reference","O'zgarmas qiymat","Global variable","Function"],answer:0},
+
+{ id:9,type:'mcq',topic:"JS O'zgaruvchilar",text:"Temporal Dead Zone qaysi keyword bilan bog'liq?",options:["var","let","const","let va const"],answer:3},
+
+{ id:10,type:'mcq',topic:"JS O'zgaruvchilar",text:"Undefined qiymat qachon paydo bo'ladi?",options:["Variable e'lon qilinib qiymat berilmaganda","Error bo'lganda","Null yozilganda","Function tugaganda"],answer:0},
+
+/* DATA TYPES */
+
+{ id:11,type:'mcq',topic:"Ma'lumot turlari",text:"typeof 10 natijasi?",options:["number","string","object","int"],answer:0},
+
+{ id:12,type:'mcq',topic:"Ma'lumot turlari",text:"typeof undefined?",options:["undefined","null","object","boolean"],answer:0},
+
+{ id:13,type:'mcq',topic:"Ma'lumot turlari",text:"NaN nimani bildiradi?",options:["Null value","Not a Number","New number","No action"],answer:1},
+
+{ id:14,type:'mcq',topic:"Ma'lumot turlari",text:"Boolean qiymatlar?",options:["true/false","1/0","yes/no","on/off"],answer:0},
+
+{ id:15,type:'mcq',topic:"Ma'lumot turlari",text:"Object qaysi turga kiradi?",options:["Primitive","Non-Primitive","Boolean","Special"],answer:1},
+
+/* PRIMITIVE TYPES */
+
+{ id:16,type:'mcq',topic:"Primitive Types",text:"String qanday yoziladi?",options:["'text'","123","true","[]"],answer:0},
+
+{ id:17,type:'mcq',topic:"Primitive Types",text:"Number turiga qaysi kiradi?",options:["10","'10'","true","null"],answer:0},
+
+{ id:18,type:'mcq',topic:"Primitive Types",text:"null nimani bildiradi?",options:["Qiymat yo'q","Xato","0","false"],answer:0},
+
+{ id:19,type:'mcq',topic:"Primitive Types",text:"BigInt oxiri qanday yoziladi?",options:["b","n","i","g"],answer:1},
+
+{ id:20,type:'mcq',topic:"Primitive Types",text:"Symbol qanday qiymat beradi?",options:["Takrorlanuvchi","Unique","Number","Boolean"],answer:1},
+
+/* ARRAYS */
+
+{ id:21,type:'mcq',topic:"Arrays",text:"Array qanday yaratiladi?",options:["{}","[]","()","<>"],answer:1},
+
+{ id:22,type:'mcq',topic:"Arrays",text:"Array index qayerdan boshlanadi?",options:["1","0","-1","2"],answer:1},
+
+{ id:23,type:'mcq',topic:"Arrays",text:"arr.length nima beradi?",options:["Oxirgi element","Element soni","Index","Boolean"],answer:1},
+
+{ id:24,type:'mcq',topic:"Arrays",text:"push() nima qiladi?",options:["Boshiga qo'shadi","Oxiriga qo'shadi","O'chiradi","Sort qiladi"],answer:1},
+
+{ id:25,type:'mcq',topic:"Arrays",text:"pop() nima qiladi?",options:["Birinchini o'chiradi","Oxirgisini o'chiradi","Hammasini o'chiradi","Qo'shadi"],answer:1},
+
+/* ARRAY METHODS */
+
+{ id:26,type:'mcq',topic:"Array metodlari",text:"filter() nima qaytaradi?",options:["Boolean","Yangi array","Number","String"],answer:1},
+
+{ id:27,type:'mcq',topic:"Array metodlari",text:"find() nima qaytaradi?",options:["Index","Element","Boolean","Array"],answer:1},
+
+{ id:28,type:'mcq',topic:"Array metodlari",text:"includes() nima tekshiradi?",options:["Index","Mavjudligini","Length","Type"],answer:1},
+
+{ id:29,type:'mcq',topic:"Array metodlari",text:"some() metodi?",options:["Hammasini tekshiradi","Kamida bittasini tekshiradi","Sort qiladi","O'chiradi"],answer:1},
+
+{ id:30,type:'mcq',topic:"Array metodlari",text:"every() qachon true qaytaradi?",options:["Bitta mos kelsa","Hammasi mos kelsa","Hech biri","Random"],answer:1},
+
+/* LOOPS */
+
+{ id:31,type:'mcq',topic:"For Loops",text:"for loop qaysi holatda ishlatiladi?",options:["Takrorlash","Condition","Error","Import"],answer:0},
+
+{ id:32,type:'mcq',topic:"For Loops",text:"for...of nimani iteratsiya qiladi?",options:["Keys","Values","Indexes only","Objects only"],answer:1},
+
+{ id:33,type:'mcq',topic:"For Loops",text:"for...in nimani beradi?",options:["Qiymat","Key/index","Boolean","Array"],answer:1},
+
+{ id:34,type:'mcq',topic:"For Loops",text:"while loop qachon ishlaydi?",options:["Condition true bo'lsa","Har doim","Bir marta","Error bo'lsa"],answer:0},
+
+{ id:35,type:'mcq',topic:"For Loops",text:"do...while farqi?",options:["Oldin tekshiradi","Kamida 1 marta ishlaydi","Ishlamaydi","Faqat array"],answer:1},
+
+{ id:36,type:'mcq',topic:"For Loops",text:"forEach nimani qaytaradi?",options:["Array","undefined","Boolean","Number"],answer:1},
+
+/* FUNCTIONS */
+
+{ id:37,type:'mcq',topic:"Functions",text:"Function nima?",options:["Variable","Reusable code","Array","Loop"],answer:1},
+
+{ id:38,type:'mcq',topic:"Functions",text:"return nima qiladi?",options:["Natija qaytaradi","Stop qiladi","Loop yaratadi","Error beradi"],answer:0},
+
+{ id:39,type:'mcq',topic:"Functions",text:"Arrow function belgisi?",options:["=>","->","==>","::"],answer:0},
+
+{ id:40,type:'mcq',topic:"Functions",text:"Default parameter nima?",options:["Majburiy qiymat","Default qiymat","Null","Boolean"],answer:1},
+
+{ id:41,type:'mcq',topic:"Functions",text:"Callback function?",options:["Function ichidagi function","Argument sifatida berilgan function","Loop","Object"],answer:1},
+
+{ id:42,type:'mcq',topic:"Functions",text:"Anonymous function nima?",options:["Nomsiz function","Global function","Async function","Class"],answer:0},
+
+{ id:43,type:'mcq',topic:"Functions",text:"Closure nima beradi?",options:["Memory access","Loop","Array","Type"],answer:0},
+
+{ id:44,type:'mcq',topic:"Functions",text:"IIFE qachon ishlaydi?",options:["Chaqqanda","Darhol","Asyncda","Never"],answer:1},
+
+{ id:45,type:'mcq',topic:"Functions",text:"this arrow functionda?",options:["Global","Lexical","Window","Undefined"],answer:1},
+
+/* TYPESCRIPT */
+
+{ id:46,type:'mcq',topic:"TypeScript",text:"TypeScript nima?",options:["Framework","JS superset","Database","Compiler"],answer:1},
+
+{ id:47,type:'mcq',topic:"TypeScript",text:"TS fayl kengaytmasi?",options:[".ts",".js",".tsx",".jsx"],answer:0},
+
+{ id:48,type:'mcq',topic:"TypeScript",text:"Type annotation?",options:["Type yozish","Import","Loop","Function"],answer:0},
+
+{ id:49,type:'mcq',topic:"TypeScript",text:"number type?",options:["let a:number","let a:string","let a:any[]","let a:bool"],answer:0},
+
+{ id:50,type:'mcq',topic:"TypeScript",text:"string type?",options:["string","text","str","char"],answer:0},
+
+{ id:51,type:'mcq',topic:"TypeScript",text:"boolean type qiymatlari?",options:["1/0","true/false","yes/no","on/off"],answer:1},
+
+{ id:52,type:'mcq',topic:"TypeScript",text:"any nima?",options:["Strict type","Har qanday type","Number","Object"],answer:1},
+
+{ id:53,type:'mcq',topic:"TypeScript",text:"unknown farqi?",options:["Xavfsizroq","Tezroq","JS only","Null"],answer:0},
+
+{ id:54,type:'mcq',topic:"TypeScript",text:"Interface nima?",options:["Type contract","Loop","Variable","Array"],answer:0},
+
+{ id:55,type:'mcq',topic:"TypeScript",text:"Optional property belgisi?",options:["!","?","*","#"],answer:1},
+
+{ id:56,type:'mcq',topic:"TypeScript",text:"Union type belgisi?",options:["|","&","+","="],answer:0},
+
+{ id:57,type:'mcq',topic:"TypeScript",text:"Enum nima?",options:["Constant group","Loop","Array","Function"],answer:0},
+
+{ id:58,type:'mcq',topic:"TypeScript",text:"Readonly nima qiladi?",options:["O'zgartirib bo'lmaydi","Delete qiladi","Clone","Sort"],answer:0},
+
+{ id:59,type:'mcq',topic:"TypeScript",text:"Tuple nima?",options:["Fixed type array","Object","Loop","Map"],answer:0},
+
+{ id:60,type:'mcq',topic:"TypeScript",text:"TS compile qayerga?",options:["Python","JavaScript","HTML","CSS"],answer:1},
+
+/* EXTRA JS */
+
+{ id:61,type:'mcq',topic:"JS Basics",text:"Strict mode qanday yoqiladi?",options:["'use strict'","strict()","enable()","mode()"],answer:0},
+
+{ id:62,type:'mcq',topic:"JS Basics",text:"== nima qiladi?",options:["Strict compare","Type convert compare","Assign","Add"],answer:1},
+
+{ id:63,type:'mcq',topic:"JS Basics",text:"=== nima qiladi?",options:["Strict equality","Convert","Assign","Loop"],answer:0},
+
+{ id:64,type:'mcq',topic:"JS Basics",text:"Falsy qiymat?",options:["0","1","true","[]"],answer:0},
+
+{ id:65,type:'mcq',topic:"JS Basics",text:"Truthy qiymat?",options:["''","0","'hi'","null"],answer:2},
+
+{ id:66,type:'mcq',topic:"Arrays",text:"shift() nima qiladi?",options:["Boshini o'chiradi","Oxirini o'chiradi","Qo'shadi","Sort"],answer:0},
+
+{ id:67,type:'mcq',topic:"Arrays",text:"unshift()?",options:["Boshiga qo'shadi","Oxiriga qo'shadi","Delete","Reverse"],answer:0},
+
+{ id:68,type:'mcq',topic:"Arrays",text:"join() nima qiladi?",options:["Stringga aylantiradi","Sort","Delete","Push"],answer:0},
+
+{ id:69,type:'mcq',topic:"Array metodlari",text:"reduce boshlang'ich qiymat?",options:["Initial value","Index","Key","Type"],answer:0},
+
+{ id:70,type:'mcq',topic:"Array metodlari",text:"sort() default?",options:["Alphabetical","Numeric","Random","Boolean"],answer:0},
+
+{ id:71,type:'mcq',topic:"Functions",text:"Rest operator?",options:["...args","args[]","*args","#args"],answer:0},
+
+{ id:72,type:'mcq',topic:"Functions",text:"Spread operator?",options:["...","++","--","&&"],answer:0},
+
+{ id:73,type:'mcq',topic:"Functions",text:"Async function kalit so'zi?",options:["async","await","promise","thread"],answer:0},
+
+{ id:74,type:'mcq',topic:"Functions",text:"await qayerda ishlaydi?",options:["async ichida","Global","Loop","Object"],answer:0},
+
+{ id:75,type:'mcq',topic:"Functions",text:"Promise holatlari?",options:["pending fulfilled rejected","start stop end","true false","open close"],answer:0},
+
+{ id:76,type:'mcq',topic:"TypeScript",text:"Type alias kalit so'zi?",options:["type","alias","typedef","define"],answer:0},
+
+{ id:77,type:'mcq',topic:"TypeScript",text:"Generics belgisi?",options:["<>","{}","()","[]"],answer:0},
+
+{ id:78,type:'mcq',topic:"TypeScript",text:"never type?",options:["Hech qachon qaytmaydi","Null","Undefined","Any"],answer:0},
+
+{ id:79,type:'mcq',topic:"TypeScript",text:"void type?",options:["Qiymat qaytarmaydi","Boolean","Null","Array"],answer:0},
+
+{ id:80,type:'mcq',topic:"TypeScript",text:"tsconfig nima?",options:["Config file","Compiler","Library","Framework"],answer:0},
+
+/* =========================
+   SHORT ANSWER (81–100)
+========================= */
+
+{ id:81,type:'short',topic:"JS Basics",text:"JavaScript interpreter nima?",placeholder:"Javobingiz...",answer:"Kod satrma-satr bajariladigan tizim."},
+
+{ id:82,type:'short',topic:"JS Basics",text:"Hoisting nima?",placeholder:"Javobingiz...",answer:"Deklaratsiyalarning yuqoriga ko'tarilishi."},
+
+{ id:83,type:'short',topic:"Variables",text:"let va var farqi?",placeholder:"Javob...",answer:"let block scope, var function scope."},
+
+{ id:84,type:'short',topic:"Variables",text:"const objectni o'zgartirish mumkinmi?",placeholder:"Javob...",answer:"Ha, propertylarini o'zgartirish mumkin."},
+
+{ id:85,type:'short',topic:"Data Types",text:"typeof operator nima qiladi?",placeholder:"Javob...",answer:"Qiymat tipini aniqlaydi."},
+
+{ id:86,type:'short',topic:"Primitive",text:"Primitive turlarni sanang.",placeholder:"Javob...",answer:"string number boolean null undefined bigint symbol"},
+
+{ id:87,type:'short',topic:"Primitive",text:"Symbol nima uchun ishlatiladi?",placeholder:"Javob...",answer:"Unique identifier yaratish uchun."},
+
+{ id:88,type:'short',topic:"Arrays",text:"Array length qanday olinadi?",placeholder:"Javob...",answer:"array.length"},
+
+{ id:89,type:'short',topic:"Array metodlari",text:"map nima qiladi?",placeholder:"Javob...",answer:"Har elementni o'zgartirib yangi array qaytaradi."},
+
+{ id:90,type:'short',topic:"Array metodlari",text:"filter nima qiladi?",placeholder:"Javob...",answer:"Shartga mos elementlardan yangi array yaratadi."},
+
+{ id:91,type:'short',topic:"Loops",text:"for va while farqi?",placeholder:"Javob...",answer:"for iteratsiya soni ma'lum, while condition asosida."},
+
+{ id:92,type:'short',topic:"Loops",text:"forEach qayerda ishlatiladi?",placeholder:"Javob...",answer:"Array elementlarini iteratsiya qilishda."},
+
+{ id:93,type:'short',topic:"Functions",text:"Arrow function nima?",placeholder:"Javob...",answer:"Qisqa sintaksisli funksiya."},
+
+{ id:94,type:'short',topic:"Functions",text:"Callback function ta'rifi?",placeholder:"Javob...",answer:"Argument sifatida uzatilgan funksiya."},
+
+{ id:95,type:'short',topic:"Functions",text:"Closure nima beradi?",placeholder:"Javob...",answer:"Tashqi scope o'zgaruvchilariga kirish."},
+
+{ id:96,type:'short',topic:"Functions",text:"Pure function nima?",placeholder:"Javob...",answer:"Side effect yo'q va bir xil input bir xil output beradi."},
+
+{ id:97,type:'short',topic:"TypeScript",text:"TypeScript afzalligi?",placeholder:"Javob...",answer:"Static typing orqali xatolarni oldin aniqlaydi."},
+
+{ id:98,type:'short',topic:"TypeScript",text:"Interface nima?",placeholder:"Javob...",answer:"Object strukturasini belgilaydi."},
+
+{ id:99,type:'short',topic:"TypeScript",text:"any va unknown farqi?",placeholder:"Javob...",answer:"unknown xavfsizroq, ishlatishdan oldin tekshiruv talab qiladi."},
+
+{ id:100,type:'short',topic:"TypeScript",text:"Compilation nima?",placeholder:"Javob...",answer:"TS kodni JS ga aylantirish jarayoni."}
+
+];
 const BKEY='jstest_banned_v1';
 function getBanned(){try{return JSON.parse(localStorage.getItem(BKEY)||'[]');}catch{return[];}}
 function saveBanned(a){localStorage.setItem(BKEY,JSON.stringify(a));}
