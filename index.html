@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JS & TypeScript Test Platformasi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#6c63ff;--accent2:#ff6584;--accent3:#43e8b0;--text:#e8e8f0;--text2:#8888a8;--warn:#ffb84d;--danger:#ff4d6d;--success:#43e8b0;--radius:12px;--mono:'Space Mono',monospace;--sans:'Sora',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+#root{min-height:100vh;}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 20%,rgba(108,99,255,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(255,101,132,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.aw{position:relative;z-index:1;}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3rem;width:100%;max-width:460px;box-shadow:0 0 60px rgba(108,99,255,.15);}
+.login-logo{text-align:center;margin-bottom:2.5rem;}
+.logo-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:16px;padding:1rem 1.5rem;font-family:var(--mono);font-size:1.5rem;font-weight:700;margin-bottom:1rem;}
+.login-logo h1{font-size:1.5rem;font-weight:800;}
+.login-logo p{color:var(--text2);font-size:.9rem;margin-top:.4rem;}
+.fg{margin-bottom:1.5rem;}
+.fg label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:.6rem;}
+.fg input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.2rem;color:var(--text);font-family:var(--sans);font-size:1rem;outline:none;transition:border-color .2s;}
+.fg input:focus{border-color:var(--accent);}
+.fg input::placeholder{color:var(--text2);}
+.btn-p{width:100%;background:linear-gradient(135deg,var(--accent),#9b59ff);border:none;border-radius:var(--radius);padding:1rem;color:#fff;font-family:var(--sans);font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.btn-p:hover{opacity:.9;}
+.ban-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.ban-card{background:var(--surface);border:2px solid var(--danger);border-radius:20px;padding:3rem;width:100%;max-width:500px;text-align:center;box-shadow:0 0 80px rgba(255,77,109,.2);}
+.ban-card h2{font-size:2rem;font-weight:800;color:var(--danger);margin-bottom:1rem;}
+.ban-card p{color:var(--text2);line-height:1.7;margin-bottom:.5rem;}
+.ban-name{font-size:1.2rem;font-weight:700;color:var(--text);}
+.ban-viols{margin:1.5rem 0;background:rgba(255,77,109,.1);border-radius:var(--radius);padding:1rem;}
+.vi{display:flex;align-items:center;gap:.5rem;padding:.3rem 0;font-size:.9rem;color:var(--warn);}
+.cheat-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:9999;}
+.cheat-popup{background:var(--surface);border:2px solid var(--warn);border-radius:20px;padding:2.5rem;max-width:420px;width:90%;text-align:center;box-shadow:0 0 60px rgba(255,184,77,.3);}
+.cheat-popup.last{border-color:var(--danger);box-shadow:0 0 60px rgba(255,77,109,.4);}
+.cheat-popup h3{font-size:1.4rem;font-weight:800;color:var(--warn);margin-bottom:.8rem;}
+.cheat-popup.last h3{color:var(--danger);}
+.cheat-popup p{color:var(--text2);line-height:1.6;margin-bottom:1.2rem;}
+.cheat-cnt{font-family:var(--mono);font-size:2rem;font-weight:700;color:var(--danger);margin:.5rem 0;}
+.btn-w{background:linear-gradient(135deg,var(--warn),#ff9f1c);border:none;border-radius:var(--radius);padding:.8rem 2rem;color:#1a1000;font-family:var(--sans);font-size:.95rem;font-weight:700;cursor:pointer;}
+.test-header{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:sticky;top:0;z-index:100;}
+.hl{display:flex;align-items:center;gap:1rem;}
+.hlogo{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--accent);}
+.huser{font-size:.9rem;color:var(--text2);}
+.huser span{color:var(--text);font-weight:600;}
+.hr{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.tbox{font-family:var(--mono);font-size:1.1rem;font-weight:700;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.4rem 1rem;color:var(--accent3);}
+.tbox.tw{color:var(--warn);border-color:var(--warn);}
+.tbox.td{color:var(--danger);border-color:var(--danger);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.cbadge{display:flex;align-items:center;gap:.5rem;background:rgba(255,184,77,.1);border:1px solid rgba(255,184,77,.3);border-radius:8px;padding:.4rem .8rem;font-size:.8rem;font-weight:700;color:var(--warn);}
+.cbadge.red{background:rgba(255,77,109,.15);border-color:rgba(255,77,109,.4);color:var(--danger);}
+.cdot{width:8px;height:8px;border-radius:50%;background:var(--warn);}
+.cdot.r{background:var(--danger);animation:pulse 1s infinite;}
+.pw{background:var(--surface2);border-bottom:1px solid var(--border);padding:.5rem 2rem;}
+.pi{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text2);margin-bottom:.4rem;}
+.pt{background:var(--border);border-radius:100px;height:4px;}
+.pf{background:linear-gradient(90deg,var(--accent),var(--accent3));height:4px;border-radius:100px;transition:width .4s ease;}
+.tb{max-width:800px;margin:0 auto;padding:2rem;}
+.slabel{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:.3rem .8rem;border-radius:100px;background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.3);margin-bottom:1rem;}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.5rem;}
+.qnum{font-family:var(--mono);font-size:.75rem;color:var(--text2);margin-bottom:.8rem;}
+.qtext{font-size:1rem;font-weight:600;line-height:1.6;margin-bottom:1.5rem;}
+.qcode{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:var(--mono);font-size:.85rem;color:var(--accent3);line-height:1.5;margin-bottom:1.5rem;overflow-x:auto;white-space:pre-wrap;}
+.opts{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;cursor:pointer;display:flex;align-items:flex-start;gap:.8rem;transition:border-color .15s,background .15s;font-size:.95rem;line-height:1.5;}
+.opt:hover{border-color:var(--accent);background:rgba(108,99,255,.07);}
+.opt.sel{border-color:var(--accent);background:rgba(108,99,255,.12);}
+.oltr{font-family:var(--mono);font-size:.75rem;font-weight:700;width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2);}
+.opt.sel .oltr{border-color:var(--accent);color:var(--accent);}
+.sinp{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;color:var(--text);font-family:var(--sans);font-size:1rem;outline:none;transition:border-color .2s;resize:vertical;min-height:80px;}
+.sinp:focus{border-color:var(--accent);}
+.tnav{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.ndots{display:flex;gap:.3rem;flex-wrap:wrap;max-width:400px;}
+.nd{width:10px;height:10px;border-radius:3px;background:var(--border);cursor:pointer;transition:background .2s;}
+.nd.ans{background:var(--accent);}
+.nd.cur{background:var(--accent3);}
+.nd.stp{border-radius:50%;}
+.nacts{display:flex;gap:.8rem;}
+.btn-n{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem 1.4rem;color:var(--text);font-family:var(--sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:border-color .2s,background .2s;}
+.btn-n:hover{border-color:var(--accent);background:rgba(108,99,255,.1);}
+.btn-s{background:linear-gradient(135deg,var(--success),#22c98a);border:none;border-radius:var(--radius);padding:.7rem 1.8rem;color:#001a10;font-family:var(--sans);font-size:.9rem;font-weight:700;cursor:pointer;}
+.rs{max-width:700px;margin:0 auto;padding:2rem;}
+.rh{text-align:center;padding:2rem 0 3rem;}
+.sw{width:140px;height:140px;border-radius:50%;margin:0 auto 1.5rem;position:relative;display:flex;align-items:center;justify-content:center;}
+.si{width:120px;height:120px;border-radius:50%;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;}
+.sn{font-family:var(--mono);font-size:1.8rem;font-weight:700;}
+.sl{font-size:.7rem;color:var(--text2);}
+.rh h2{font-size:1.8rem;font-weight:800;margin-bottom:.5rem;}
+.rh p{color:var(--text2);}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;text-align:center;}
+.sv{font-family:var(--mono);font-size:1.5rem;font-weight:700;margin-bottom:.2rem;}
+.slb{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
+.rvsec h3{font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
+.ri{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:.8rem;}
+.rq{font-size:.9rem;font-weight:600;margin-bottom:.6rem;}
+.btn-r{display:block;width:100%;background:linear-gradient(135deg,var(--accent),#9b59ff);border:none;border-radius:var(--radius);padding:1rem;color:#fff;font-family:var(--sans);font-size:1rem;font-weight:700;cursor:pointer;margin-top:2rem;}
+.warn-icon{font-size:3rem;margin-bottom:1rem;}
+@media(max-width:600px){.test-header{padding:.8rem 1rem;}.tb{padding:1rem;}.rstats{grid-template-columns:1fr 1fr;}.tnav{padding:.8rem 1rem;}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const QS = [
+  {id:1,type:'mcq',topic:"JS Basics",text:"JavaScript qaysi turdagi dasturlash tili?",options:["Statik va kompilyatsiya qilinadigan","Dinamik va interpretatsiya qilinadigan","Faqat backend uchun","Faqat frontend uchun"],answer:1},
+  {id:2,type:'mcq',topic:"JS O'zgaruvchilar",text:"Quyidagi kalit so'zlardan qaysi biri blok darajasidagi o'zgaruvchi e'lon qiladi?",code:"var a = 1;\nlet b = 2;\nconst c = 3;",options:["Faqat var","var va let","let va const","Uchkalasi ham"],answer:2},
+  {id:3,type:'mcq',topic:"JS O'zgaruvchilar",text:"const bilan e'lon qilingan o'zgaruvchiga qayta qiymat bersa nima bo'ladi?",options:["Yangi qiymat beriladi","TypeError chiqadi","SyntaxError chiqadi","Hech narsa bo'lmaydi"],answer:1},
+  {id:4,type:'mcq',topic:"Ma'lumot turlari",text:"typeof null qanday qiymat qaytaradi?",code:"console.log(typeof null);",options:['"null"','"undefined"','"object"','"boolean"'],answer:2},
+  {id:5,type:'mcq',topic:"Primitive Types",text:"JavaScriptda nechta Primitive ma'lumot turi mavjud?",options:["5","6","7","8"],answer:2},
+  {id:6,type:'mcq',topic:"Primitive Types",text:"Quyidagi qiymatlardan qaysi biri falsy EMAS?",options:['0 (nol)','\"\" (bo\'sh string)','\"0\" (nol string)','undefined'],answer:2},
+  {id:7,type:'mcq',topic:"BigInt",text:"BigInt qanday yaratiladi?",options:["BigInt(9999999999999)","9999999999999n","Ikkalasi ham to'g'ri","new BigInt(9999)"],answer:2},
+  {id:8,type:'mcq',topic:"Symbol",text:"Symbol() haqida qaysi ifoda to'g'ri?",options:["Har safar bir xil qiymat qaytaradi","Har safar noyob (unique) qiymat qaytaradi","new kalit so'zi bilan ishlatiladi","Faqat string kalit bo'la oladi"],answer:1},
+  {id:9,type:'mcq',topic:"Arrays",text:"Quyidagi kod nima chiqaradi?",code:"const arr = [1, 2, 3];\nconsole.log(arr[5]);",options:["null","0","undefined","RangeError"],answer:2},
+  {id:10,type:'mcq',topic:"Array metodlari",text:".map() metodi nima qaytaradi?",options:["Asl arrayni o'zgartiradi","Yangi array qaytaradi","Boolean qaytaradi","Birinchi elementni qaytaradi"],answer:1},
+  {id:11,type:'mcq',topic:"Array metodlari",text:"Quyidagi kodning natijasi nima?",code:"const nums = [1,2,3,4,5];\nconst r = nums.filter(n => n % 2 === 0);\nconsole.log(r);",options:["[1,3,5]","[2,4]","[1,2,3,4,5]","[false,true,false,true,false]"],answer:1},
+  {id:12,type:'mcq',topic:"Array metodlari",text:".reduce() metodi haqida qaysi ifoda to'g'ri?",options:["Har doim array qaytaradi","Accumulator yordamida bitta qiymatga kamaytiradi","Arrayni teskari tartibga soladi","Faqat raqamli arraylar uchun ishlaydi"],answer:1},
+  {id:13,type:'mcq',topic:"Array metodlari",text:"splice() va slice() farqi nima?",options:["Ikkalasi ham asl arrayni o'zgartiradi","splice asl arrayni o'zgartiradi, slice yangi array qaytaradi","slice asl arrayni o'zgartiradi, splice yangi array qaytaradi","Hech qanday farqi yo'q"],answer:1},
+  {id:14,type:'mcq',topic:"For Loops",text:"for...of va for...in farqi nima?",options:["for...of key, for...in qiymat iteratsiya qiladi","for...in key, for...of qiymat iteratsiya qiladi","Ikkalasi ham bir xil ishlaydi","for...of faqat array, for...in faqat string uchun"],answer:1},
+  {id:15,type:'mcq',topic:"For Loops",text:"Quyidagi kod nechta marta ishlaydi?",code:"let i = 0;\ndo {\n  i++;\n} while (i < 3);",options:["0","2","3","4"],answer:2},
+  {id:16,type:'mcq',topic:"For Loops",text:"forEach() va map() ning asosiy farqi nima?",options:["forEach yangi array qaytaradi","map() hech narsa qaytarmaydi","forEach undefined qaytaradi, map yangi array qaytaradi","Ikkalasi ham bir xil"],answer:2},
+  {id:17,type:'mcq',topic:"Functions",text:"Arrow function va oddiy funksiyaning asosiy farqlaridan biri nima?",options:["Arrow function this ni leksik muhitdan oladi","Arrow function arguments obyektiga ega","Arrow function constructor bo'la oladi","Arrow function hoisting qilinadi"],answer:0},
+  {id:18,type:'mcq',topic:"Functions",text:"Quyidagi kodning natijasi nima?",code:'function greet(name = "Dunyo") {\n  return `Salom, ${name}!`;\n}\nconsole.log(greet());',options:["Salom, undefined!","Salom, !","Salom, Dunyo!","Error"],answer:2},
+  {id:19,type:'mcq',topic:"Functions",text:"Closure nima?",options:["Funksiyani yopish usuli","Ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish imkoniyati","Funksiyani qayta ishlatish","Funksiyani argument sifatida uzatish"],answer:1},
+  {id:20,type:'mcq',topic:"Functions",text:"IIFE nima uchun ishlatiladi?",code:"(function() {\n  // kod\n})();",options:["Kodni sekinlatish uchun","Global scope ni ifloslantirmaslik va o'zgaruvchilarni encapsulate qilish uchun","Faqat async kodlar uchun","Faqat class metodlari uchun"],answer:1},
+  {id:21,type:'mcq',topic:"TypeScript",text:"TypeScript haqida qaysi ifoda to'g'ri?",options:["Brauzerda to'g'ridan-to'g'ri ishlaydi","JavaScript ning superset'i va kompilyatsiyadan o'tadi","Faqat backend uchun","Alohida mustaqil dasturlash tili"],answer:1},
+  {id:22,type:'mcq',topic:"TypeScript",text:"Interface deklaratsiya birlashtirishni (declaration merging) qo'llab-quvvatlaydimi?",options:["Ha, interface deklaratsiya birlashtirishni qo'llab-quvvatlaydi","Yo'q, faqat Type alias qo'llab-quvvatlaydi","Ikkalasi ham qo'llab-quvvatlaydi","Ikkalasi ham qo'llab-quvvatlamaydi"],answer:0},
+  {id:23,type:'mcq',topic:"TypeScript",text:"Quyidagi TypeScript kodida xato bormi?",code:"let age: number = \"yosh\";",options:["Xato yo'q, TypeScript avtomatik konvertatsiya qiladi","Xato bor: string qiymat number tipiga mos kelmaydi","Xato yo'q, JavaScript da ishlaydi","Runtime da xato bo'ladi"],answer:1},
+  {id:24,type:'mcq',topic:"TypeScript",text:"? operatori TypeScriptda nima uchun ishlatiladi?",code:"interface User {\n  name: string;\n  age?: number;\n}",options:["Majburiy maydon belgilash uchun","Ixtiyoriy maydon belgilash uchun","Null tekshirish uchun","Ternary operator uchun"],answer:1},
+  {id:25,type:'mcq',topic:"Ma'lumot turlari",text:"== va === operatorlarining natijasi nima?",code:'console.log(1 == "1");  // ?\nconsole.log(1 === "1"); // ?',options:["false, false","true, true","true, false","false, true"],answer:2},
+  {id:26,type:'short',topic:"JS Basics",text:"JavaScript da hoisting nima? Qisqacha tushuntiring.",placeholder:"Javobingizni yozing...",answer:"Hoisting - o'zgaruvchi va funksiya deklaratsiyalarining ijro vaqtida kodning boshiga ko'tarilishi. var undefined bilan, funksiya deklaratsiyalari to'liq ko'tariladi."},
+  {id:27,type:'short',topic:"Primitive vs Non-Primitive",text:"Primitive va Non-Primitive ma'lumot turlari orasidagi asosiy farqni yozing.",placeholder:"Javobingizni yozing...",answer:"Primitive turlar qiymat bo'yicha (by value), non-primitive (object, array) turlar esa havola (reference) bo'yicha saqlanadi va uzatiladi."},
+  {id:28,type:'short',topic:"Array metodlari",text:"Array.prototype.find() va Array.prototype.findIndex() metodlarining farqini yozing.",placeholder:"Javobingizni yozing...",answer:"find() birinchi mos elementni qaytaradi, findIndex() uning indeksini qaytaradi. Topilmasa find() undefined, findIndex() -1 qaytaradi."},
+  {id:29,type:'short',topic:"Functions",text:"Pure function nima? Qisqa misol keltiring.",placeholder:"Javobingizni yozing...",answer:"Pure function - bir xil input uchun har doim bir xil output qaytaradigan va yon ta'sirlar (side effects) bo'lmagan funksiya. Misol: const add = (a,b) => a+b;"},
+  {id:30,type:'short',topic:"TypeScript",text:"TypeScriptda any va unknown tiplarining farqini tushuntiring.",placeholder:"Javobingizni yozing...",answer:"any - har qanday operatsiyaga ruxsat beradi, type checking o'tkazib yuboriladi. unknown - xavfsizroq: ishlatishdan oldin tip tekshiruvi talab qilinadi."}
+];
+
+const BKEY='jstest_banned_v1';
+function getBanned(){try{return JSON.parse(localStorage.getItem(BKEY)||'[]');}catch{return[];}}
+function saveBanned(a){localStorage.setItem(BKEY,JSON.stringify(a));}
+
+function LoginScreen({onLogin}){
+  const [nm,setNm]=useState('');
+  const [sn,setSn]=useState('');
+  const [err,setErr]=useState('');
+  const go=()=>{
+    if(!nm.trim()||!sn.trim()){setErr('Ism va familiyangizni kiriting!');return;}
+    const full=nm.trim()+' '+sn.trim();
+    if(getBanned().includes(full.toLowerCase())){setErr('Siz avval ban qilingansiz. Administratorga murojaat qiling.');return;}
+    onLogin(full);
+  };
+  return(
+    <div className="login-screen">
+      <div className="login-card">
+        <div className="login-logo">
+          <div className="logo-badge">JS/TS</div>
+          <h1>Test Platformasi</h1>
+          <p>JavaScript &amp; TypeScript bilimlarini sinab ko'ring</p>
+        </div>
+        <div className="fg"><label>Ismingiz</label><input value={nm} onChange={e=>setNm(e.target.value)} placeholder="Masalan: Alisher" onKeyDown={e=>e.key==='Enter'&&go()}/></div>
+        <div className="fg"><label>Familiyangiz</label><input value={sn} onChange={e=>setSn(e.target.value)} placeholder="Masalan: Karimov" onKeyDown={e=>e.key==='Enter'&&go()}/></div>
+        {err&&<p style={{color:'var(--danger)',fontSize:'.85rem',marginBottom:'1rem'}}>{err}</p>}
+        <button className="btn-p" onClick={go}>Testni boshlash →</button>
+        <p style={{textAlign:'center',marginTop:'1.2rem',fontSize:'.78rem',color:'var(--text2)'}}>⚠️ Alt+Tab, oyna almashtirish va yashirish kuzatiladi. 3 ta qoidabuzarlikdan keyin ban.</p>
+      </div>
+    </div>
+  );
+}
+
+function BanScreen({userName,viols}){
+  const lbl={'blur':'Oynadan chiqish (Alt+Tab)','visibilityHidden':'Sahifani yashirish (Win+M)'};
+  return(
+    <div className="ban-screen">
+      <div className="ban-card">
+        <div style={{fontSize:'4rem',marginBottom:'1.5rem'}}>🚫</div>
+        <h2>Foydalanuvchi Bloklandi</h2>
+        <p className="ban-name">{userName}</p>
+        <p style={{marginTop:'.5rem'}}>Siz {viols.length} ta qoidabuzarlikka yo'l qo'ydingiz.</p>
+        <div className="ban-viols">
+          {viols.map((v,i)=><div key={i} className="vi"><span>⚠️</span><span>{i+1}. {lbl[v.type]||v.type} — savol #{v.q}</span></div>)}
+        </div>
+        <p style={{fontSize:'.82rem',marginTop:'1rem'}}>Administratorga murojaat qiling.</p>
+        <button className="btn-w" style={{marginTop:'1.5rem'}} onClick={()=>{saveBanned(getBanned().filter(x=>x!==userName.toLowerCase()));window.location.reload();}}>Sahifani yangilash</button>
+      </div>
+    </div>
+  );
+}
+
+function CheatWarn({count,type,onClose}){
+  const isLast=count>=2;
+  const msg={blur:"Siz boshqa oynaga o'tdingiz (Alt+Tab aniqlandi).",visibilityHidden:"Siz sahifani yashirdingiz yoki boshqa tabga o'tdingiz."};
+  return(
+    <div className="cheat-overlay">
+      <div className={'cheat-popup'+(isLast?' last':'')}>
+        <div className="warn-icon">{isLast?'🚨':'⚠️'}</div>
+        <h3>{isLast?'OXIRGI OGOHLANTIRISH!':'Qoidabuzarlik aniqlandi!'}</h3>
+        <p>{msg[type]||'Taqiqlangan amal aniqlandi.'}</p>
+        <div className="cheat-cnt">{count} / 3</div>
+        <p>{isLast?'Keyingi qoidabuzarlikda siz darhol BAN qilinasiz!':('Sizda yana '+(3-count)+' ta imkoniyat qoldi.')}</p>
+        <button className="btn-w" onClick={onClose}>Tushundim, davom etaman</button>
+      </div>
+    </div>
+  );
+}
+
+function TestApp({userName}){
+  const [cur,setCur]=useState(0);
+  const [ans,setAns]=useState({});
+  const [done,setDone]=useState(false);
+  const [cnt,setCnt]=useState(0);
+  const [viols,setViols]=useState([]);
+  const [showW,setShowW]=useState(false);
+  const [wtype,setWtype]=useState('');
+  const [banned,setBanned]=useState(false);
+  const [t,setT]=useState(45*60);
+  const tmr=useRef(null);
+  const ref=useRef({count:0,viols:[],curQ:1});
+  const lastB=useRef(0);
+  const doneR=useRef(false);
+
+  useEffect(()=>{
+    if(done||banned)return;
+    tmr.current=setInterval(()=>setT(v=>{if(v<=1){clearInterval(tmr.current);if(!doneR.current){doneR.current=true;setDone(true);}return 0;}return v-1;}),1000);
+    return()=>clearInterval(tmr.current);
+  },[done,banned]);
+
+  const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+
+  const reg=useCallback((type)=>{
+    if(doneR.current)return;
+    const now=Date.now();
+    if(now-lastB.current<800)return;
+    lastB.current=now;
+    const nc=ref.current.count+1;
+    const nv=[...ref.current.viols,{type,q:ref.current.curQ}];
+    ref.current={...ref.current,count:nc,viols:nv};
+    setCnt(nc);setViols(nv);setWtype(type);setShowW(true);
+    if(nc>=3){saveBanned([...getBanned(),userName.toLowerCase()]);setShowW(false);setBanned(true);}
+  },[userName]);
+
+  useEffect(()=>{ref.current.curQ=cur+1;},[cur]);
+
+  useEffect(()=>{
+    const onBlur=()=>reg('blur');
+    const onVis=()=>{if(document.hidden)reg('visibilityHidden');};
+    window.addEventListener('blur',onBlur);
+    document.addEventListener('visibilitychange',onVis);
+    return()=>{window.removeEventListener('blur',onBlur);document.removeEventListener('visibilitychange',onVis);};
+  },[reg]);
+
+  const setA=(id,v)=>setAns(p=>({...p,[id]:v}));
+  const submit=()=>{clearInterval(tmr.current);doneR.current=true;setDone(true);};
+
+  if(banned)return <BanScreen userName={userName} viols={viols}/>;
+
+  if(done){
+    let mok=0,sok=0;
+    QS.forEach(q=>{
+      if(q.type==='mcq'&&ans[q.id]===q.answer)mok++;
+      if(q.type==='short'&&ans[q.id]&&ans[q.id].trim().length>10)sok++;
+    });
+    const tot=QS.length,corr=mok+sok,pct=Math.round((corr/tot)*100);
+    const grade=pct>=90?'A':pct>=75?'B':pct>=60?'C':pct>=45?'D':'F';
+    const gc=pct>=75?'var(--success)':pct>=45?'var(--warn)':'var(--danger)';
+    const circ=2*Math.PI*65;
+    return(
+      <div className="aw">
+        <div style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',padding:'1rem 2rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+          <span style={{fontFamily:'var(--mono)',color:'var(--accent)',fontWeight:700}}>JS/TS TEST</span>
+          <span style={{color:'var(--text2)',fontSize:'.9rem'}}>{userName}</span>
+        </div>
+        <div className="rs">
+          <div className="rh">
+            <div className="sw">
+              <svg style={{position:'absolute',inset:0,width:'100%',height:'100%'}} viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="65" fill="none" stroke="var(--border)" strokeWidth="8"/>
+                <circle cx="70" cy="70" r="65" fill="none" stroke={gc} strokeWidth="8"
+                  strokeDasharray={(pct/100*circ).toFixed(1)+' '+circ.toFixed(1)}
+                  strokeLinecap="round" transform="rotate(-90 70 70)"/>
+              </svg>
+              <div className="si"><div className="sn" style={{color:gc}}>{pct}%</div><div className="sl">{grade}</div></div>
+            </div>
+            <h2 style={{color:gc}}>{pct>=75?'🎉 Ajoyib!':pct>=50?'👍 Yaxshi!':'📚 Ko\'proq o\'qing!'}</h2>
+            <p>{corr}/{tot} ta savol to'g'ri</p>
+          </div>
+          <div className="rstats">
+            <div className="sc"><div className="sv" style={{color:'var(--success)'}}>{mok}/25</div><div className="slb">Variantli</div></div>
+            <div className="sc"><div className="sv" style={{color:'var(--warn)'}}>{sok}/5</div><div className="slb">Qisqa javob</div></div>
+            <div className="sc"><div className="sv" style={{color:'var(--danger)'}}>{cnt}/3</div><div className="slb">Ogohlantirishlar</div></div>
+          </div>
+          <div className="rvsec">
+            <h3>Noto'g'ri variantli javoblar</h3>
+            {QS.filter(q=>q.type==='mcq'&&ans[q.id]!==q.answer).map(q=>(
+              <div key={q.id} className="ri">
+                <div className="rq">#{q.id}. {q.text}</div>
+                <div style={{fontSize:'.85rem',color:'var(--danger)',marginBottom:'.3rem'}}>Sizning javobingiz: {ans[q.id]!==undefined?q.options[ans[q.id]]:'(javob berilmagan)'}</div>
+                <div style={{fontSize:'.85rem',color:'var(--success)'}}>To'g'ri javob: {q.options[q.answer]}</div>
+              </div>
+            ))}
+            {QS.filter(q=>q.type==='mcq'&&ans[q.id]!==q.answer).length===0&&<p style={{color:'var(--success)',padding:'1rem 0'}}>✅ Barcha variantli savollar to'g'ri!</p>}
+            <h3 style={{marginTop:'1.5rem'}}>Qisqa javoblar (namuna)</h3>
+            {QS.filter(q=>q.type==='short').map(q=>(
+              <div key={q.id} className="ri">
+                <div className="rq">#{q.id}. {q.text}</div>
+                <div style={{fontSize:'.85rem',color:'var(--text2)',marginBottom:'.4rem'}}>Sizning javobingiz: {ans[q.id]||'(javob berilmagan)'}</div>
+                <div style={{fontSize:'.85rem',color:'var(--accent3)',borderTop:'1px solid var(--border)',paddingTop:'.4rem'}}>Namuna javob: {q.answer}</div>
+              </div>
+            ))}
+          </div>
+          <button className="btn-r" onClick={()=>window.location.reload()}>🔄 Qaytadan boshlash</button>
+        </div>
+      </div>
+    );
+  }
+
+  const q=QS[cur];
+  const tc=t<300?'td':t<600?'tw':'';
+  const acnt=Object.keys(ans).length;
+  return(
+    <div className="aw">
+      {showW&&!banned&&<CheatWarn count={cnt} type={wtype} onClose={()=>setShowW(false)}/>}
+      <div className="test-header">
+        <div className="hl">
+          <span className="hlogo">JS/TS TEST</span>
+          <span className="huser">Talaba: <span>{userName}</span></span>
+        </div>
+        <div className="hr">
+          <div className={'cbadge'+(cnt>=2?' red':'')}>
+            <div className={'cdot'+(cnt>=2?' r':'')}/>
+            Ogohlantirishlar: {cnt}/3
+          </div>
+          <div className={'tbox '+tc}>⏱ {fmt(t)}</div>
+        </div>
+      </div>
+      <div className="pw">
+        <div className="pi"><span>Savol {cur+1} / {QS.length}</span><span>Javob berildi: {acnt}/{QS.length}</span></div>
+        <div className="pt"><div className="pf" style={{width:((cur+1)/QS.length*100)+'%'}}/></div>
+      </div>
+      <div className="tb">
+        {(cur===0||cur===25)&&<div className="slabel">{cur===0?'📋 Variantli savollar (1–25)':'✍️ Qisqa javob savollar (26–30)'}</div>}
+        <div className="qcard">
+          <div className="qnum">#{q.id} • {q.topic}</div>
+          <div className="qtext">{q.text}</div>
+          {q.code&&<pre className="qcode">{q.code}</pre>}
+          {q.type==='mcq'?(
+            <ul className="opts">
+              {q.options.map((o,i)=>(
+                <li key={i} className={'opt'+(ans[q.id]===i?' sel':'')} onClick={()=>setA(q.id,i)}>
+                  <span className="oltr">{String.fromCharCode(65+i)}</span>
+                  <span>{o}</span>
+                </li>
+              ))}
+            </ul>
+          ):(
+            <textarea className="sinp" placeholder={q.placeholder} value={ans[q.id]||''} onChange={e=>setA(q.id,e.target.value)} rows={4}/>
+          )}
+        </div>
+      </div>
+      <div className="tnav">
+        <div className="ndots">
+          {QS.map((qq,i)=>(
+            <div key={i} className={'nd'+(qq.type==='short'?' stp':'')+(i===cur?' cur':ans[qq.id]!==undefined?' ans':'')} onClick={()=>setCur(i)} title={'Savol '+(i+1)}/>
+          ))}
+        </div>
+        <div className="nacts">
+          {cur>0&&<button className="btn-n" onClick={()=>setCur(c=>c-1)}>← Oldingi</button>}
+          {cur<QS.length-1?<button className="btn-n" onClick={()=>setCur(c=>c+1)}>Keyingi →</button>:<button className="btn-s" onClick={submit}>✓ Testni yakunlash</button>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App(){
+  const [u,setU]=useState(null);
+  return u?<TestApp userName={u}/>:<LoginScreen onLogin={setU}/>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
